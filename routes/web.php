@@ -4,6 +4,14 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+
+// Temporary route to run migrations on Hostinger
+Route::get('/migrate-db', function () {
+    Artisan::call('migrate', ['--force' => true]);
+    Artisan::call('db:seed', ['--force' => true]); // Optional: if you have default data like Admin User
+    return 'Database Tables Created Successfully!';
+});
 
 Route::get('/', function () {
     if (auth()->check()) {

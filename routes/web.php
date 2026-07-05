@@ -7,7 +7,15 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\MessageTemplate;
 
-Route::get('/setup-templates', function () {
+Route::get('/fix-server', function () {
+    // Clear all caches
+    Artisan::call('optimize:clear');
+    Artisan::call('view:clear');
+    
+    // Run migrations just in case
+    Artisan::call('migrate', ['--force' => true]);
+
+    // Setup Dummy Templates
     MessageTemplate::updateOrCreate(
         ['name' => 'Default WhatsApp Birthday', 'channel' => 'whatsapp', 'reminder_type' => 'birthday'],
         ['subject' => null, 'body' => 'Hi {{client_name}}, wishing you a very Happy Birthday! Hope you have a wonderful year ahead. - Preshak CRM', 'is_active' => true, 'is_default' => true]
@@ -23,7 +31,7 @@ Route::get('/setup-templates', function () {
         ['subject' => null, 'body' => 'Dear {{client_name}}, this is a reminder that your premium for policy {{policy_number}} is due on {{premium_due_date}}. Please ignore if already paid.', 'is_active' => true, 'is_default' => true]
     );
 
-    return "3 Dummy Templates Created Successfully!";
+    return "Server fixed! Cache cleared, Database checked, and 3 Dummy Templates created. Please refresh your dashboard.";
 });
 
 

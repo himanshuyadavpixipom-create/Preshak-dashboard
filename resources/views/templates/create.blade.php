@@ -67,14 +67,23 @@
                                         @error('reminder_type') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                                     </div>
 
-                                    <div class="col-span-6 sm:col-span-3">
-                                        <label for="channel" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Channel</label>
-                                        <select id="channel" name="channel" class="mt-1 block w-full py-2 px-3 shadow-sm sm:text-sm rounded-lg border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white focus:ring-primary-500 focus:border-primary-500 transition-colors" required>
-                                            <option value="whatsapp" {{ old('channel') == 'whatsapp' ? 'selected' : '' }}>WhatsApp</option>
-                                            <option value="sms" {{ old('channel') == 'sms' ? 'selected' : '' }}>SMS</option>
-                                            <option value="email" {{ old('channel') == 'email' ? 'selected' : '' }}>Email</option>
-                                        </select>
-                                        @error('channel') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                                    <div class="col-span-6 sm:col-span-6">
+                                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Channels</label>
+                                        <div class="flex items-center gap-6">
+                                            <label class="flex items-center cursor-pointer">
+                                                <input type="checkbox" name="channels[]" value="whatsapp" {{ (is_array(old('channels')) && in_array('whatsapp', old('channels'))) ? 'checked' : '' }} class="rounded border-slate-300 text-primary-600 shadow-sm focus:ring-primary-500">
+                                                <span class="ml-2 text-sm text-slate-700 dark:text-slate-300 font-medium">WhatsApp</span>
+                                            </label>
+                                            <label class="flex items-center cursor-pointer">
+                                                <input type="checkbox" name="channels[]" value="sms" {{ (is_array(old('channels')) && in_array('sms', old('channels'))) ? 'checked' : '' }} class="rounded border-slate-300 text-primary-600 shadow-sm focus:ring-primary-500">
+                                                <span class="ml-2 text-sm text-slate-700 dark:text-slate-300 font-medium">SMS</span>
+                                            </label>
+                                            <label class="flex items-center cursor-pointer">
+                                                <input type="checkbox" name="channels[]" value="email" {{ (is_array(old('channels')) && in_array('email', old('channels'))) ? 'checked' : '' }} class="rounded border-slate-300 text-primary-600 shadow-sm focus:ring-primary-500">
+                                                <span class="ml-2 text-sm text-slate-700 dark:text-slate-300 font-medium">Email</span>
+                                            </label>
+                                        </div>
+                                        @error('channels') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                                     </div>
                                 </div>
 

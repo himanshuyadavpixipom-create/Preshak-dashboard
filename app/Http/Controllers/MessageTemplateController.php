@@ -36,12 +36,25 @@ class MessageTemplateController extends Controller
     public function store(StoreMessageTemplateRequest $request)
     {
         $data = $request->validated();
+        $channels = $data['channels'];
+        unset($data['channels']);
+
         $data['is_active'] = $request->boolean('is_active', false);
         $data['is_default'] = $request->boolean('is_default', false);
 
-        MessageTemplate::create($data);
+        foreach ($channels as $channel) {
+            $templateData = $data;
+            $templateData['channel'] = $channel;
+            
+            // Optionally, append the channel name to the template name if multiple are selected
+            if (count($channels) > 1) {
+                $templateData['name'] = $data['name'] . ' (' . ucfirst($channel) . ')';
+            }
 
-        return redirect()->route('templates.index')->with('success', 'Template created successfully.');
+            MessageTemplate::create($templateData);
+        }
+
+        return redirect()->route('templates.index')->with('success', 'Template(s) created successfully.');
     }
 
     /**

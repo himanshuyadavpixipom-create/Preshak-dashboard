@@ -50,6 +50,9 @@ class ClientController extends Controller
             $client->groups()->sync($request->groups);
         }
 
+        // Automatically scan reminders for the new client
+        \Illuminate\Support\Facades\Artisan::call('crm:scan-reminders');
+
         return redirect()->route('clients.index')->with('success', 'Client added successfully.');
     }
 
@@ -84,6 +87,9 @@ class ClientController extends Controller
         } else {
             $client->groups()->detach();
         }
+
+        // Automatically update reminders
+        \Illuminate\Support\Facades\Artisan::call('crm:scan-reminders');
 
         return redirect()->route('clients.index')->with('success', 'Client updated successfully.');
     }
@@ -190,6 +196,9 @@ class ClientController extends Controller
         }
         
         fclose($file);
+        
+        // Scan for reminders after bulk import
+        \Illuminate\Support\Facades\Artisan::call('crm:scan-reminders');
         
         return redirect()->route('clients.index')->with('success', "$count clients imported successfully.");
     }

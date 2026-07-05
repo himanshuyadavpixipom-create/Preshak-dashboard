@@ -74,6 +74,13 @@
             <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-soft border border-slate-200/60 dark:border-slate-700/60 overflow-hidden flex flex-col">
                 <div class="px-6 py-5 border-b border-slate-100 dark:border-slate-700/60 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/30">
                     <h3 class="text-lg font-heading font-bold text-slate-900 dark:text-white">Action Required</h3>
+                    <form method="POST" action="{{ route('reminders.scan') }}" class="m-0">
+                        @csrf
+                        <button type="submit" class="text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors flex items-center gap-1" title="Scan for new reminders">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                            Refresh
+                        </button>
+                    </form>
                 </div>
                 <div class="p-0 flex-1">
                     @if(isset($pendingRemindersList) && $pendingRemindersList->count() > 0)

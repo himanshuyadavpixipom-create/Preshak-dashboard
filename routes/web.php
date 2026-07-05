@@ -57,6 +57,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('broadcasts', [\App\Http\Controllers\BroadcastController::class, 'store'])->name('broadcasts.store');
     Route::resource('reminders', \App\Http\Controllers\ReminderController::class);
     Route::post('reminders/{id}/dispatch', [DashboardController::class, 'dispatchReminder'])->name('reminders.dispatch');
+    Route::post('/reminders/scan', [DashboardController::class, 'scanReminders'])->name('reminders.scan');
     Route::resource('festivals', \App\Http\Controllers\FestivalController::class);
 
     // Message Templates Routes

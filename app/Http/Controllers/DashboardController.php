@@ -130,4 +130,13 @@ class DashboardController extends Controller
         
         return redirect()->back()->with('error', 'Reminder is already processed or sent.');
     }
+    public function scanReminders()
+    {
+        try {
+            \Illuminate\Support\Facades\Artisan::call('crm:scan-reminders');
+            return redirect()->back()->with('success', 'Reminders scanned and updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to scan reminders: ' . $e->getMessage());
+        }
+    }
 }

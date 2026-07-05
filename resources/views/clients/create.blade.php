@@ -77,6 +77,20 @@
                 </div>
             </x-section-card>
 
+            <!-- Groups -->
+            <x-section-card title="Groups (Tags)">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    @forelse($groups as $group)
+                        <label class="flex items-center p-3 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                            <input type="checkbox" name="groups[]" value="{{ $group->id }}" class="rounded border-slate-300 text-primary-600 shadow-sm focus:ring-primary-500" {{ in_array($group->id, old('groups', [])) ? 'checked' : '' }}>
+                            <span class="ml-3 text-sm font-medium text-slate-700">{{ $group->name }}</span>
+                        </label>
+                    @empty
+                        <p class="text-sm text-slate-500 col-span-full">No groups created yet. You can create groups from the sidebar to categorize your clients.</p>
+                    @endforelse
+                </div>
+            </x-section-card>
+
             <!-- Policy & Notes -->
             <x-section-card title="Policy & Additional Details">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">

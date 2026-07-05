@@ -38,6 +38,8 @@
         
         <x-sidebar-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')" icon="dashboard" label="Dashboard" />
         <x-sidebar-link href="{{ route('clients.index') }}" :active="request()->routeIs('clients.*')" icon="users" label="Clients" />
+        <x-sidebar-link href="{{ route('groups.index') }}" :active="request()->routeIs('groups.*')" icon="template" label="Groups" />
+        <x-sidebar-link href="{{ route('broadcasts.create') }}" :active="request()->routeIs('broadcasts.*')" icon="template" label="Broadcasts" />
         <x-sidebar-link href="{{ route('templates.index') }}" :active="request()->routeIs('templates.*')" icon="template" label="Templates" />
         <x-sidebar-link href="{{ route('logs.index') }}" :active="request()->routeIs('logs.*')" icon="logs" label="Delivery Logs" />
         <x-sidebar-link href="{{ route('festivals.index') }}" :active="request()->routeIs('festivals.*')" icon="festivals" label="Festivals" />

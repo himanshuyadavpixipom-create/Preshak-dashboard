@@ -15,11 +15,31 @@
                    class="block w-full pl-10 pr-3 py-2 border border-slate-300 rounded-lg leading-5 bg-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm transition-colors duration-200">
         </form>
 
-        <!-- Add Button -->
-        <a href="{{ route('clients.create') }}" class="inline-flex items-center justify-center px-4 py-2 bg-primary-600 border border-transparent rounded-lg font-semibold text-sm text-white tracking-wide hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all shadow-sm shrink-0">
-            <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-            Add Client
-        </a>
+        <!-- Action Buttons -->
+        <div class="flex items-center gap-2">
+            <!-- Import Form -->
+            <form action="{{ route('clients.import') }}" method="POST" enctype="multipart/form-data" class="hidden" id="importForm">
+                @csrf
+                <input type="file" name="csv_file" id="csv_file" accept=".csv" onchange="document.getElementById('importForm').submit();">
+            </form>
+            
+            <button onclick="document.getElementById('csv_file').click();" class="inline-flex items-center justify-center px-3 py-2 bg-white border border-slate-300 rounded-lg font-semibold text-sm text-slate-700 hover:bg-slate-50 transition-all shadow-sm shrink-0" title="Import CSV">
+                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                Import
+            </button>
+
+            <!-- Export -->
+            <a href="{{ route('clients.export') }}" class="inline-flex items-center justify-center px-3 py-2 bg-white border border-slate-300 rounded-lg font-semibold text-sm text-slate-700 hover:bg-slate-50 transition-all shadow-sm shrink-0" title="Export CSV">
+                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                Export
+            </a>
+
+            <!-- Add Button -->
+            <a href="{{ route('clients.create') }}" class="inline-flex items-center justify-center px-4 py-2 bg-primary-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-primary-700 transition-all shadow-sm shrink-0">
+                <svg class="w-5 h-5 mr-1 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                Add Client
+            </a>
+        </div>
     </div>
 
     <!-- Alert Messages -->

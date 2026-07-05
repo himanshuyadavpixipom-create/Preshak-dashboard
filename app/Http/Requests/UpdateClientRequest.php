@@ -36,6 +36,8 @@ class UpdateClientRequest extends FormRequest
             'address' => ['nullable', 'string', 'max:1000'],
             'notes' => ['nullable', 'string'],
             'status' => ['required', 'string', 'in:active,inactive'],
+            'groups' => ['nullable', 'array'],
+            'groups.*' => ['exists:groups,id']
         ];
     }
 }

@@ -49,7 +49,12 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::get('clients/export', [ClientController::class, 'export'])->name('clients.export');
+    Route::post('clients/import', [ClientController::class, 'import'])->name('clients.import');
     Route::resource('clients', ClientController::class);
+    Route::resource('groups', \App\Http\Controllers\GroupController::class);
+    Route::get('broadcasts/create', [\App\Http\Controllers\BroadcastController::class, 'create'])->name('broadcasts.create');
+    Route::post('broadcasts', [\App\Http\Controllers\BroadcastController::class, 'store'])->name('broadcasts.store');
     Route::resource('reminders', \App\Http\Controllers\ReminderController::class);
     Route::post('reminders/{id}/dispatch', [DashboardController::class, 'dispatchReminder'])->name('reminders.dispatch');
     Route::resource('festivals', \App\Http\Controllers\FestivalController::class);

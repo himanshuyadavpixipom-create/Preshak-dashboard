@@ -39,6 +39,11 @@ class Client extends Model
         return $this->hasMany(Reminder::class);
     }
 
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class);
+    }
+
     /**
      * Ensure empty strings are converted to null for the unique policy_number field.
      */

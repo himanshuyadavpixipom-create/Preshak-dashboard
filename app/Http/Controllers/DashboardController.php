@@ -47,10 +47,23 @@ class DashboardController extends Controller
             
             foreach ($monthReminders as $rem) {
                 if ($rem->reminder_date->format('Y-m-d') === $dateString) {
+                    $clientName = $rem->client->name ?? 'Unknown';
+                    $typeFormatted = str_replace('_', ' ', ucfirst($rem->type));
+                    
+                    $details = '';
+                    if ($rem->type === 'premium_due' && $rem->client) {
+                        $details = 'Policy: ' . ($rem->client->policy_name ?? 'N/A') . ' (' . ($rem->client->policy_number ?? 'N/A') . ')';
+                    } elseif ($rem->type === 'anniversary') {
+                        $details = 'Wedding Anniversary';
+                    } else {
+                        $details = 'Date of Birth';
+                    }
+
                     $dayEvents[] = [
                         'id' => 'rem_'.$rem->id,
                         'type' => 'reminder',
-                        'title' => ucfirst($rem->type) . ' - ' . ($rem->client->name ?? 'Unknown'),
+                        'title' => $clientName . ' ' . ucwords($typeFormatted),
+                        'details' => $details,
                         'color' => 'bg-accent-500'
                     ];
                 }
@@ -62,6 +75,7 @@ class DashboardController extends Controller
                         'id' => 'fest_'.$fest->id,
                         'type' => 'festival',
                         'title' => $fest->name,
+                        'details' => 'Festival / Holiday',
                         'color' => 'bg-violet-500'
                     ];
                 }

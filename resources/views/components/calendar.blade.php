@@ -32,29 +32,41 @@
                     </span>
                 </div>
 
-                <!-- Event Dots Container -->
+                <!-- Event Badge Container -->
                 @if(count($day['events']) > 0)
-                    <div class="mt-2 flex flex-wrap gap-1 relative">
-                        @foreach(array_slice($day['events'], 0, 3) as $event)
-                            <div class="w-2 h-2 rounded-full {{ $event['color'] }}"></div>
-                        @endforeach
-                        
-                        @if(count($day['events']) > 3)
-                            <div class="text-[10px] font-bold text-slate-500 leading-none self-center ml-0.5">
-                                +{{ count($day['events']) - 3 }}
-                            </div>
-                        @endif
+                    @php $firstEvent = $day['events'][0]; @endphp
+                    <div class="mt-1 relative group/event">
+                        <!-- Badge -->
+                        <div class="flex items-center gap-1.5 px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-700/50 border border-slate-200/60 dark:border-slate-600/50 shadow-sm truncate">
+                            <div class="w-2 h-2 rounded-full flex-shrink-0 {{ $firstEvent['color'] }}"></div>
+                            <span class="text-[10px] sm:text-xs font-semibold text-slate-700 dark:text-slate-300 truncate">
+                                {{ $firstEvent['title'] }}
+                            </span>
+                            @if(count($day['events']) > 1)
+                                <span class="text-[9px] sm:text-[10px] font-bold text-slate-500 bg-slate-200 dark:bg-slate-600 px-1 rounded flex-shrink-0">
+                                    +{{ count($day['events']) - 1 }}
+                                </span>
+                            @endif
+                        </div>
 
                         <!-- Desktop Hover Popover -->
-                        <div class="hidden lg:block absolute z-20 top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-slate-900 dark:bg-slate-700 text-white text-xs rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none p-2 space-y-1">
+                        <div class="hidden lg:block absolute z-50 top-full left-1/2 -translate-x-1/2 mt-2 w-56 bg-slate-900 dark:bg-slate-700 text-white text-xs rounded-xl shadow-xl opacity-0 invisible group-hover/event:opacity-100 group-hover/event:visible transition-all duration-200 pointer-events-none p-3 space-y-2 border border-slate-700 dark:border-slate-600">
                             <!-- Arrow -->
-                            <div class="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-900 dark:bg-slate-700 rotate-45"></div>
+                            <div class="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-900 dark:bg-slate-700 border-t border-l border-slate-700 dark:border-slate-600 rotate-45"></div>
                             
-                            <div class="relative z-10 max-h-32 overflow-hidden">
+                            <div class="relative z-10 max-h-64 overflow-y-auto pr-1">
+                                <div class="font-bold text-slate-300 mb-2 border-b border-slate-700 pb-1">{{ $day['date']->format('l, F j') }}</div>
                                 @foreach($day['events'] as $event)
-                                    <div class="flex items-center gap-2 truncate py-0.5">
-                                        <span class="w-1.5 h-1.5 rounded-full flex-shrink-0 {{ $event['color'] }}"></span>
-                                        <span class="truncate">{{ $event['title'] }}</span>
+                                    <div class="py-1.5 border-b border-slate-800 dark:border-slate-600 last:border-0">
+                                        <div class="flex items-start gap-2">
+                                            <span class="w-2 h-2 rounded-full flex-shrink-0 mt-1 {{ $event['color'] }}"></span>
+                                            <div>
+                                                <div class="font-semibold text-white">{{ $event['title'] }}</div>
+                                                @if(isset($event['details']) && $event['details'])
+                                                    <div class="text-[10px] text-slate-400 mt-0.5 leading-tight">{{ $event['details'] }}</div>
+                                                @endif
+                                            </div>
+                                        </div>
                                     </div>
                                 @endforeach
                             </div>
@@ -99,9 +111,14 @@
             <div class="overflow-y-auto flex-1 space-y-3 pb-4">
                 <template x-if="selectedDay">
                     <template x-for="event in selectedDay.events" :key="event.id">
-                        <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-100 dark:border-slate-700/50">
-                            <span class="w-3 h-3 rounded-full flex-shrink-0" :class="event.color"></span>
-                            <span class="text-sm font-medium text-slate-800 dark:text-slate-200 truncate" x-text="event.title"></span>
+                        <div class="flex flex-col gap-1 p-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-100 dark:border-slate-700/50">
+                            <div class="flex items-center gap-3">
+                                <span class="w-3 h-3 rounded-full flex-shrink-0" :class="event.color"></span>
+                                <span class="text-sm font-bold text-slate-800 dark:text-slate-200" x-text="event.title"></span>
+                            </div>
+                            <template x-if="event.details">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 pl-6" x-text="event.details"></span>
+                            </template>
                         </div>
                     </template>
                 </template>

@@ -1,0 +1,95 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Services\ReminderService;
+use App\Models\Client;
+use App\Models\Festival;
+use App\Models\Reminder;
+use Illuminate\Support\Carbon;
+
+class DashboardController extends Controller
+{
+    public function index(ReminderService $reminderService)
+    {
+        $today = Carbon::today();
+        
+        // Month boundaries for calendar
+        $startOfMonth = $today->copy()->startOfMonth();
+        $endOfMonth = $today->copy()->endOfMonth();
+        
+        // Fetch Stats
+        $totalClients = Client::count();
+        $messagesSent = \App\Models\DeliveryLog::where('status', 'sent')->count();
+        $pendingReminders = Reminder::where('status', 'pending')->count();
+        $failedDeliveries = \App\Models\DeliveryLog::where('status', 'failed')->count();
+
+        // Fetch Month Events (Reminders & Festivals)
+        $monthReminders = Reminder::with('client')
+            ->whereBetween('reminder_date', [$startOfMonth, $endOfMonth])
+            ->get();
+            
+        $monthFestivals = Festival::whereBetween('festival_date', [$startOfMonth, $endOfMonth])
+            ->get();
+
+        // Build Calendar Array
+        $calendarDays = [];
+        $startGrid = $startOfMonth->copy()->startOfWeek(Carbon::MONDAY);
+        $endGrid = $endOfMonth->copy()->endOfWeek(Carbon::SUNDAY);
+        
+        for ($date = $startGrid->copy(); $date->lte($endGrid); $date->addDay()) {
+            $dateString = $date->format('Y-m-d');
+            $isCurrentMonth = $date->month === $today->month;
+            $isToday = $date->isToday();
+            
+            $dayEvents = [];
+            
+            foreach ($monthReminders as $rem) {
+                if ($rem->reminder_date->format('Y-m-d') === $dateString) {
+                    $dayEvents[] = [
+                        'id' => 'rem_'.$rem->id,
+                        'type' => 'reminder',
+                        'title' => ucfirst($rem->type) . ' - ' . ($rem->client->name ?? 'Unknown'),
+                        'color' => 'bg-accent-500'
+                    ];
+                }
+            }
+            
+            foreach ($monthFestivals as $fest) {
+                if ($fest->festival_date->format('Y-m-d') === $dateString) {
+                    $dayEvents[] = [
+                        'id' => 'fest_'.$fest->id,
+                        'type' => 'festival',
+                        'title' => $fest->name,
+                        'color' => 'bg-violet-500'
+                    ];
+                }
+            }
+            
+            $calendarDays[] = [
+                'date' => $date->copy(),
+                'day' => $date->day,
+                'isCurrentMonth' => $isCurrentMonth,
+                'isToday' => $isToday,
+                'events' => $dayEvents,
+            ];
+        }
+
+        // Upcoming stuff for the widget
+        $upcomingFestivals = Festival::where('festival_date', '>=', $today)
+            ->orderBy('festival_date', 'asc')
+            ->take(5)
+            ->get();
+
+        return view('dashboard', compact(
+            'totalClients',
+            'messagesSent',
+            'pendingReminders',
+            'failedDeliveries',
+            'calendarDays',
+            'upcomingFestivals',
+            'today'
+        ));
+    }
+}

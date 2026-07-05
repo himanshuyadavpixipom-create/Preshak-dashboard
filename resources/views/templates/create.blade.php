@@ -81,7 +81,7 @@
                                 <!-- Content -->
                                 <div>
                                     <label for="subject" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Subject (Email Only)</label>
-                                    <input type="text" name="subject" id="subject" value="{{ old('subject') }}" class="mt-1 block w-full shadow-sm sm:text-sm rounded-lg border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white focus:ring-primary-500 focus:border-primary-500 transition-colors" placeholder="e.g. Happy Birthday {{client_name}}!">
+                                    <input type="text" name="subject" id="subject" value="{{ old('subject') }}" class="mt-1 block w-full shadow-sm sm:text-sm rounded-lg border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white focus:ring-primary-500 focus:border-primary-500 transition-colors" placeholder="e.g. Happy Birthday @{{client_name}}!">
                                     @error('subject') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                                 </div>
 

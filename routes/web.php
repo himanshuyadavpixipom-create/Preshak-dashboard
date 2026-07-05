@@ -5,6 +5,26 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use App\Models\MessageTemplate;
+
+Route::get('/setup-templates', function () {
+    MessageTemplate::updateOrCreate(
+        ['name' => 'Default WhatsApp Birthday', 'channel' => 'whatsapp', 'reminder_type' => 'birthday'],
+        ['subject' => null, 'body' => 'Hi {{client_name}}, wishing you a very Happy Birthday! Hope you have a wonderful year ahead. - Preshak CRM', 'is_active' => true, 'is_default' => true]
+    );
+
+    MessageTemplate::updateOrCreate(
+        ['name' => 'Default Email Anniversary', 'channel' => 'email', 'reminder_type' => 'anniversary'],
+        ['subject' => 'Happy Anniversary {{client_name}}!', 'body' => 'Dear {{client_name}},\n\nWishing you a very Happy Anniversary! May your journey together be full of love.\n\nBest Regards,\nPreshak CRM', 'is_active' => true, 'is_default' => true]
+    );
+
+    MessageTemplate::updateOrCreate(
+        ['name' => 'Default SMS Premium Due', 'channel' => 'sms', 'reminder_type' => 'premium_due'],
+        ['subject' => null, 'body' => 'Dear {{client_name}}, this is a reminder that your premium for policy {{policy_number}} is due on {{premium_due_date}}. Please ignore if already paid.', 'is_active' => true, 'is_default' => true]
+    );
+
+    return "3 Dummy Templates Created Successfully!";
+});
 
 
 

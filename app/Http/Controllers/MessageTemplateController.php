@@ -72,10 +72,28 @@ class MessageTemplateController extends Controller
     public function update(UpdateMessageTemplateRequest $request, MessageTemplate $template)
     {
         $data = $request->validated();
+        $channels = $data['channels'];
+        unset($data['channels']);
+
         $data['is_active'] = $request->boolean('is_active', false);
         $data['is_default'] = $request->boolean('is_default', false);
 
+        // Pop the first channel to update the existing template
+        $firstChannel = array_shift($channels);
+        $data['channel'] = $firstChannel;
+        
         $template->update($data);
+
+        // If other channels were checked, create new templates for them
+        foreach ($channels as $channel) {
+            $cloneData = $data;
+            $cloneData['channel'] = $channel;
+            
+            // Optionally rename the clone to avoid confusion
+            $cloneData['name'] = $data['name'] . ' (' . ucfirst($channel) . ')';
+            
+            MessageTemplate::create($cloneData);
+        }
 
         return redirect()->route('templates.index')->with('success', 'Template updated successfully.');
     }

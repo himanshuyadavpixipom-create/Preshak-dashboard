@@ -25,7 +25,8 @@ class UpdateMessageTemplateRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'reminder_type' => ['required', 'string', 'in:birthday,anniversary,premium_due,custom'],
-            'channel' => ['required', 'string', 'in:whatsapp,sms,email'],
+            'channels' => ['required', 'array', 'min:1'],
+            'channels.*' => ['string', 'in:whatsapp,sms,email'],
             'subject' => ['nullable', 'string', 'max:255'],
             'body' => ['required', 'string'],
             'is_active' => ['boolean'],

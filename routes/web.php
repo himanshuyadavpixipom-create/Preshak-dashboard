@@ -51,6 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('clients', ClientController::class);
     Route::resource('reminders', \App\Http\Controllers\ReminderController::class);
+    Route::post('reminders/{id}/dispatch', [DashboardController::class, 'dispatchReminder'])->name('reminders.dispatch');
     Route::resource('festivals', \App\Http\Controllers\FestivalController::class);
 
     // Message Templates Routes

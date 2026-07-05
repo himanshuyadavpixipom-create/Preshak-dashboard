@@ -96,6 +96,11 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
+        $pendingRemindersList = Reminder::with('client')
+            ->where('status', 'pending')
+            ->whereDate('reminder_date', '<=', $today)
+            ->get();
+
         return view('dashboard', compact(
             'totalClients',
             'messagesSent',
@@ -103,7 +108,26 @@ class DashboardController extends Controller
             'failedDeliveries',
             'calendarDays',
             'upcomingFestivals',
+            'pendingRemindersList',
             'today'
         ));
+    }
+
+    public function dispatchReminder($id, \App\Services\MessageDispatchService $dispatchService)
+    {
+        $reminder = Reminder::findOrFail($id);
+        
+        if ($reminder->status === Reminder::STATUS_PENDING) {
+            $reminder->update(['status' => Reminder::STATUS_PROCESSING]);
+            
+            try {
+                $dispatchService->dispatch($reminder);
+                return redirect()->back()->with('success', 'Message sent successfully on configured channels!');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Failed to send message: ' . $e->getMessage());
+            }
+        }
+        
+        return redirect()->back()->with('error', 'Reminder is already processed or sent.');
     }
 }

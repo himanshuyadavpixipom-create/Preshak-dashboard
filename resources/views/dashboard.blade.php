@@ -70,8 +70,43 @@
         <!-- Bottom Section: Recent Activity & Festivals -->
         <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
+            <!-- Today's Pending Reminders -->
+            <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-soft border border-slate-200/60 dark:border-slate-700/60 overflow-hidden flex flex-col">
+                <div class="px-6 py-5 border-b border-slate-100 dark:border-slate-700/60 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/30">
+                    <h3 class="text-lg font-heading font-bold text-slate-900 dark:text-white">Action Required</h3>
+                </div>
+                <div class="p-0 flex-1">
+                    @if(isset($pendingRemindersList) && $pendingRemindersList->count() > 0)
+                        <ul class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                            @foreach($pendingRemindersList as $rem)
+                                <li class="px-6 py-4 hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm font-semibold text-slate-900 dark:text-white">{{ $rem->client->name ?? 'Unknown' }}</p>
+                                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 capitalize">{{ str_replace('_', ' ', $rem->type) }}</p>
+                                    </div>
+                                    <form method="POST" action="{{ route('reminders.dispatch', $rem->id) }}">
+                                        @csrf
+                                        <button type="submit" class="px-3 py-1.5 bg-accent-600 hover:bg-accent-700 text-white text-xs font-bold rounded-lg transition-colors shadow-sm">
+                                            Send Now
+                                        </button>
+                                    </form>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <div class="flex flex-col items-center justify-center py-12 text-center px-4">
+                            <div class="w-16 h-16 bg-slate-50 dark:bg-slate-800/50 rounded-full flex items-center justify-center mb-4 border border-slate-100 dark:border-slate-700/50">
+                                <svg class="w-8 h-8 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            <h3 class="text-sm font-semibold text-slate-900 dark:text-white">All caught up!</h3>
+                            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">No pending reminders for today.</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
             <!-- Recent Dispatches -->
-            <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-3xl shadow-soft border border-slate-200/60 dark:border-slate-700/60 overflow-hidden flex flex-col">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-soft border border-slate-200/60 dark:border-slate-700/60 overflow-hidden flex flex-col">
                 <div class="px-6 py-5 border-b border-slate-100 dark:border-slate-700/60 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/30">
                     <h3 class="text-lg font-heading font-bold text-slate-900 dark:text-white">Recent Dispatches</h3>
                     <a href="{{ route('logs.index') }}" class="text-sm font-medium text-accent-600 dark:text-accent-400 hover:text-accent-700 dark:hover:text-accent-300 transition-colors">View all &rarr;</a>

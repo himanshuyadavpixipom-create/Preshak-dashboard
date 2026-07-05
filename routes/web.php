@@ -15,6 +15,9 @@ Route::get('/fix-server', function () {
     // Run migrations just in case
     Artisan::call('migrate', ['--force' => true]);
 
+    // Scan for reminders so calendar gets populated
+    Artisan::call('crm:scan-reminders');
+
     // Setup Dummy Templates
     MessageTemplate::updateOrCreate(
         ['name' => 'Default WhatsApp Birthday', 'channel' => 'whatsapp', 'reminder_type' => 'birthday'],

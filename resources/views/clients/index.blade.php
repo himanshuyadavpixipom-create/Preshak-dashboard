@@ -134,10 +134,10 @@
                                     <td class="relative whitespace-nowrap py-4 pl-3 pr-6 text-right text-sm font-medium">
                                         <div class="flex items-center justify-end gap-3">
                                             <a href="{{ route('clients.edit', $client) }}" class="text-primary-600 hover:text-primary-900 transition-colors">Edit</a>
-                                            <form action="{{ route('clients.destroy', $client) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to archive this client?');">
+                                            <form action="{{ route('clients.destroy', $client) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this client?');">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="text-slate-400 hover:text-red-600 transition-colors">Archive</button>
+                                                <button type="submit" class="text-slate-400 hover:text-red-600 transition-colors">Delete</button>
                                             </form>
                                         </div>
                                     </td>

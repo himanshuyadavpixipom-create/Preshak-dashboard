@@ -130,6 +130,42 @@ class DashboardController extends Controller
         
         return redirect()->back()->with('error', 'Reminder is already processed or sent.');
     }
+
+    public function bulkDispatchReminders(Request $request, \App\Services\MessageDispatchService $dispatchService)
+    {
+        $validated = $request->validate([
+            'reminder_ids' => 'required|array',
+            'reminder_ids.*' => 'exists:reminders,id'
+        ]);
+
+        $reminders = Reminder::whereIn('id', $validated['reminder_ids'])
+            ->where('status', Reminder::STATUS_PENDING)
+            ->get();
+
+        if ($reminders->isEmpty()) {
+            return redirect()->back()->with('error', 'No valid pending reminders selected.');
+        }
+
+        $successCount = 0;
+        $failCount = 0;
+
+        foreach ($reminders as $reminder) {
+            $reminder->update(['status' => Reminder::STATUS_PROCESSING]);
+            try {
+                $dispatchService->dispatch($reminder);
+                $successCount++;
+            } catch (\Exception $e) {
+                $failCount++;
+                $reminder->update(['status' => Reminder::STATUS_FAILED, 'notes' => $e->getMessage()]);
+            }
+        }
+
+        if ($failCount > 0) {
+            return redirect()->back()->with('success', "{$successCount} sent successfully. {$failCount} failed. Check delivery logs for details.");
+        }
+
+        return redirect()->back()->with('success', "{$successCount} reminders sent successfully on configured channels!");
+    }
     public function scanReminders()
     {
         try {

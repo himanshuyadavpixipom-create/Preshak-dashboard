@@ -99,9 +99,9 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        $client->delete();
+        $client->forceDelete();
 
-        return redirect()->route('clients.index')->with('success', 'Client archived successfully.');
+        return redirect()->route('clients.index')->with('success', 'Client deleted permanently.');
     }
 
     public function export()

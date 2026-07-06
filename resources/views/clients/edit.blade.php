@@ -32,13 +32,13 @@
 
                     <div>
                         <x-input-label for="phone" value="Phone Number" />
-                        <x-text-input id="phone" name="phone" type="tel" class="mt-1 block w-full" :value="old('phone', $client->phone)" autocomplete="tel" />
+                        <x-text-input id="phone" name="phone" type="tel" class="mt-1 block w-full" :value="old('phone', $client->phone ?? '+91')" autocomplete="tel" />
                         <x-input-error :messages="$errors->get('phone')" class="mt-2" />
                     </div>
 
                     <div>
                         <x-input-label for="whatsapp_number" value="WhatsApp Number" />
-                        <x-text-input id="whatsapp_number" name="whatsapp_number" type="tel" class="mt-1 block w-full" :value="old('whatsapp_number', $client->whatsapp_number)" />
+                        <x-text-input id="whatsapp_number" name="whatsapp_number" type="tel" class="mt-1 block w-full" :value="old('whatsapp_number', $client->whatsapp_number ?? '+91')" />
                         <x-input-error :messages="$errors->get('whatsapp_number')" class="mt-2" />
                     </div>
 

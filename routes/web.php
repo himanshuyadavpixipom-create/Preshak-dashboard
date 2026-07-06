@@ -56,6 +56,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('broadcasts/create', [\App\Http\Controllers\BroadcastController::class, 'create'])->name('broadcasts.create');
     Route::post('broadcasts', [\App\Http\Controllers\BroadcastController::class, 'store'])->name('broadcasts.store');
     Route::resource('reminders', \App\Http\Controllers\ReminderController::class);
+    Route::post('reminders/dispatch-bulk', [DashboardController::class, 'bulkDispatchReminders'])->name('reminders.dispatch.bulk');
     Route::post('reminders/{id}/dispatch', [DashboardController::class, 'dispatchReminder'])->name('reminders.dispatch');
     Route::post('/reminders/scan', [DashboardController::class, 'scanReminders'])->name('reminders.scan');
     Route::resource('festivals', \App\Http\Controllers\FestivalController::class);

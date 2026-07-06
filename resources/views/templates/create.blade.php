@@ -116,7 +116,7 @@
 
                                         <div>
                                             <label for="content_variables" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Content Variables (JSON)</label>
-                                            <textarea id="content_variables" name="content_variables" rows="3" class="mt-1 block w-full shadow-sm sm:text-sm font-mono rounded-lg border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white focus:ring-primary-500 focus:border-primary-500 transition-colors" placeholder='{"1": "{{client_name}}", "2": "{{premium_due_date}}"}'>{{ old('content_variables') }}</textarea>
+                                            <textarea id="content_variables" name="content_variables" rows="3" class="mt-1 block w-full shadow-sm sm:text-sm font-mono rounded-lg border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white focus:ring-primary-500 focus:border-primary-500 transition-colors" placeholder='{"1": "@{{client_name}}", "2": "@{{premium_due_date}}"}'>{{ old('content_variables') }}</textarea>
                                             <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Map your placeholders to Twilio variables using JSON format.</p>
                                             @error('content_variables') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                                         </div>

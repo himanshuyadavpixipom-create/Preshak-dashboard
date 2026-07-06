@@ -23,13 +23,14 @@ class TemplateRenderingService
             '{{birthday}}' => 'The client\'s birthday (e.g., Jun 10)',
             '{{anniversary_date}}' => 'The client\'s anniversary date',
             '{{today_date}}' => 'Today\'s date',
+            '{{event_date}}' => 'The actual date of the reminder event (e.g., Nov 5, 2026)',
         ];
     }
 
     /**
      * Replace placeholders in a given string using the provided client context.
      */
-    public function renderText(string $text, Client $client): string
+    public function renderText(string $text, Client $client, ?\App\Models\Reminder $reminder = null): string
     {
         if (empty($text)) {
             return '';
@@ -44,6 +45,7 @@ class TemplateRenderingService
             '{{birthday}}' => $client->birthday ? Carbon::parse($client->birthday)->format('M j') : '',
             '{{anniversary_date}}' => $client->anniversary_date ? Carbon::parse($client->anniversary_date)->format('M j') : '',
             '{{today_date}}' => now()->format('M j, Y'),
+            '{{event_date}}' => $reminder && $reminder->event_date ? Carbon::parse($reminder->event_date)->format('M j, Y') : '',
         ];
 
         return strtr($text, $replacements);
@@ -52,12 +54,12 @@ class TemplateRenderingService
     /**
      * Render the full template (subject and body).
      */
-    public function renderTemplate(MessageTemplate $template, Client $client): array
+    public function renderTemplate(MessageTemplate $template, Client $client, ?\App\Models\Reminder $reminder = null): array
     {
         return [
-            'subject' => $template->subject ? $this->renderText($template->subject, $client) : null,
-            'body' => $this->renderText($template->body, $client),
-            'content_variables' => $template->content_variables ? $this->renderText($template->content_variables, $client) : null,
+            'subject' => $template->subject ? $this->renderText($template->subject, $client, $reminder) : null,
+            'body' => $this->renderText($template->body, $client, $reminder),
+            'content_variables' => $template->content_variables ? $this->renderText($template->content_variables, $client, $reminder) : null,
         ];
     }
 }

@@ -38,7 +38,7 @@ class MessagePreparationService
             throw new Exception("Reminder {$reminder->id} has no associated client.");
         }
 
-        $rendered = $this->renderingService->renderTemplate($template, $client);
+        $rendered = $this->renderingService->renderTemplate($template, $client, $reminder);
 
         // Determine recipient based on channel
         $recipient = null;

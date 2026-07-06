@@ -9,7 +9,7 @@ use Exception;
 
 class WhatsAppProvider implements MessageProviderInterface
 {
-    public function send(string $recipient, string $body, ?string $subject = null): array
+    public function send(string $recipient, string $body, ?string $subject = null, array $metadata = []): array
     {
         try {
             // Check if active
@@ -37,10 +37,20 @@ class WhatsAppProvider implements MessageProviderInterface
 
             // Real Twilio SDK logic for WhatsApp
             $twilio = new \Twilio\Rest\Client($sid, $token);
-            $message = $twilio->messages->create("whatsapp:" . $normalizedRecipient, [
+            
+            $payload = [
                 'from' => "whatsapp:" . $from,
                 'body' => $body
-            ]);
+            ];
+            
+            if (!empty($metadata['provider_template_id'])) {
+                $payload['contentSid'] = $metadata['provider_template_id'];
+                if (!empty($metadata['content_variables'])) {
+                    $payload['contentVariables'] = $metadata['content_variables'];
+                }
+            }
+
+            $message = $twilio->messages->create("whatsapp:" . $normalizedRecipient, $payload);
 
             return [
                 'success' => true,

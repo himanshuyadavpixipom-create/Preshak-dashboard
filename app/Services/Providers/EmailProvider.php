@@ -11,7 +11,7 @@ use Exception;
 
 class EmailProvider implements MessageProviderInterface
 {
-    public function send(string $recipient, string $body, ?string $subject = null): array
+    public function send(string $recipient, string $body, ?string $subject = null, array $metadata = []): array
     {
         try {
             // Check settings or config to simulate or actually send

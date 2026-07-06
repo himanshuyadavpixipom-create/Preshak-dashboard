@@ -29,6 +29,8 @@ class StoreMessageTemplateRequest extends FormRequest
             'channels.*' => ['string', 'in:whatsapp,sms,email'],
             'subject' => ['nullable', 'string', 'max:255'],
             'body' => ['required', 'string'],
+            'provider_template_id' => ['nullable', 'string', 'max:255'],
+            'content_variables' => ['nullable', 'string'],
             'is_active' => ['boolean'],
             'is_default' => ['boolean'],
         ];

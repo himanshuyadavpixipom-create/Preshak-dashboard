@@ -59,7 +59,12 @@ class MessageDispatchService
                     }
 
                     // Execute send
-                    $result = $provider->send($payload['recipient'], $payload['body'], $payload['subject']);
+                    $result = $provider->send(
+                        $payload['recipient'], 
+                        $payload['body'], 
+                        $payload['subject'], 
+                        $payload['metadata'] ?? []
+                    );
 
                     if ($result['success']) {
                         DeliveryLog::create([

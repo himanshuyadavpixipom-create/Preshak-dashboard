@@ -59,6 +59,8 @@ class MessagePreparationService
             'body'        => $rendered['body'],
             'metadata'    => [
                 'event_date' => $reminder->event_date,
+                'provider_template_id' => $template->provider_template_id,
+                'content_variables' => $rendered['content_variables'] ?? null,
             ]
         ];
     }

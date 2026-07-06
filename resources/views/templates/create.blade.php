@@ -102,6 +102,27 @@
                                     @error('body') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                                 </div>
 
+                                <!-- Twilio Content API Fields -->
+                                <div class="pt-4 border-t border-slate-100 dark:border-slate-700">
+                                    <h3 class="text-sm font-medium text-slate-800 dark:text-slate-200 mb-4">WhatsApp Content Template (Optional)</h3>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Required for Twilio WhatsApp if outside the 24-hour session window.</p>
+                                    
+                                    <div class="grid grid-cols-1 gap-6">
+                                        <div>
+                                            <label for="provider_template_id" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Twilio Content SID</label>
+                                            <input type="text" name="provider_template_id" id="provider_template_id" value="{{ old('provider_template_id') }}" class="mt-1 block w-full shadow-sm sm:text-sm rounded-lg border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white focus:ring-primary-500 focus:border-primary-500 transition-colors" placeholder="e.g. HXb5b62575e6e4ff6129ad7c8efe1f983e">
+                                            @error('provider_template_id') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                                        </div>
+
+                                        <div>
+                                            <label for="content_variables" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Content Variables (JSON)</label>
+                                            <textarea id="content_variables" name="content_variables" rows="3" class="mt-1 block w-full shadow-sm sm:text-sm font-mono rounded-lg border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white focus:ring-primary-500 focus:border-primary-500 transition-colors" placeholder='{"1": "{{client_name}}", "2": "{{premium_due_date}}"}'>{{ old('content_variables') }}</textarea>
+                                            <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Map your placeholders to Twilio variables using JSON format.</p>
+                                            @error('content_variables') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!-- Toggles -->
                                 <div class="flex flex-col space-y-4 pt-4 border-t border-slate-100 dark:border-slate-700">
                                     <label class="flex items-center group cursor-pointer w-fit">

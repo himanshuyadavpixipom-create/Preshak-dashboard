@@ -57,6 +57,7 @@ class TemplateRenderingService
         return [
             'subject' => $template->subject ? $this->renderText($template->subject, $client) : null,
             'body' => $this->renderText($template->body, $client),
+            'content_variables' => $template->content_variables ? $this->renderText($template->content_variables, $client) : null,
         ];
     }
 }

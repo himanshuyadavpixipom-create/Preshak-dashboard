@@ -15,6 +15,8 @@ class MessageTemplate extends Model
         'channel',
         'subject',
         'body',
+        'provider_template_id',
+        'content_variables',
         'is_active',
         'is_default',
     ];

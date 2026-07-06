@@ -140,19 +140,15 @@
                             <div class="md:col-span-1">
                                 <h3 class="text-lg font-bold leading-6 text-slate-900 dark:text-slate-100">WhatsApp Integration</h3>
                                 <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                                    Configure your Meta Cloud API keys.
+                                    Configure your Twilio WhatsApp Sender (Uses Twilio SID and Auth Token from SMS Settings).
                                 </p>
                             </div>
                             <div class="mt-5 md:mt-0 md:col-span-2">
                                 <div class="grid grid-cols-6 gap-6">
                                     
                                     <div class="col-span-6">
-                                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">WhatsApp Phone ID</label>
-                                        <input type="text" name="whatsapp_phone_id" value="{{ $settings['whatsapp_phone_id'] ?? '' }}" class="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-sm border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-md">
-                                    </div>
-                                    <div class="col-span-6">
-                                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">API Token</label>
-                                        <input type="password" name="whatsapp_token" value="{{ $settings['whatsapp_token'] ?? '' }}" placeholder="********" class="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-sm border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-md">
+                                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Twilio WhatsApp From Number</label>
+                                        <input type="text" name="twilio_whatsapp_from" value="{{ $settings['twilio_whatsapp_from'] ?? '' }}" placeholder="+14155238886" class="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-sm border-slate-300 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-md">
                                     </div>
 
                                     <div class="col-span-6">
